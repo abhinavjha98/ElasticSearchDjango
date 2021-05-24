@@ -19,6 +19,7 @@ from rest_framework.decorators import api_view, authentication_classes, permissi
 import requests
 from bs4 import BeautifulSoup
 from .models import Url
+import pandas as pd
 
 from django_elasticsearch_dsl_drf.filter_backends import (
     FilteringFilterBackend,
@@ -71,14 +72,27 @@ def get_data():
                             url_list.append(link['href'])
                 j+=20
         return Response(data={'status': 'Completed'}, status=status.HTTP_200_OK)
+
+def get_csv_data():
+    data = pd.read_csv('home/urldata.csv')
+    i = 0
+    for index, row in data.iterrows():
+        dbaa419 = Url(
+         url = row['url'],
+         label = row['label'],
+                            )
+        dbaa419.save()
+        print(++i)
+
 def index(request):
-    generate_random_data(query='microsoft')
-    generate_random_data(query='apple')
-    generate_random_data(query='google')
-    generate_random_data(query='bitcoin')
-    generate_random_data(query='india')
-    generate_random_data(query='china')
-    generate_random_data(query='us')
+    # generate_random_data(query='microsoft')
+    # generate_random_data(query='apple')
+    # generate_random_data(query='google')
+    # generate_random_data(query='bitcoin')
+    # generate_random_data(query='india')
+    # generate_random_data(query='china')
+    # generate_random_data(query='us')
+    get_csv_data()
     get_data()
     return JsonResponse({'status' : 200})
 
