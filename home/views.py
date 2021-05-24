@@ -30,8 +30,8 @@ from django_elasticsearch_dsl_drf.filter_backends import (
     OrderingFilterBackend,
 )
 
-def generate_random_data():
-    url = 'https://newsapi.org/v2/everything?q=tesla&from=2021-04-24&sortBy=publishedAt&apiKey=d4f421493e8241fa96a379a795ed4422'
+def generate_random_data(query):
+    url = 'https://newsapi.org/v2/everything?q='+query+'&from=2021-04-24&sortBy=publishedAt&apiKey=d4f421493e8241fa96a379a795ed4422'
     r = requests.get(url)
     payload = json.loads(r.text)
     count = 1
@@ -72,7 +72,13 @@ def get_data():
                 j+=20
         return Response(data={'status': 'Completed'}, status=status.HTTP_200_OK)
 def index(request):
-    generate_random_data()
+    generate_random_data(query='microsoft')
+    generate_random_data(query='apple')
+    generate_random_data(query='google')
+    generate_random_data(query='bitcoin')
+    generate_random_data(query='india')
+    generate_random_data(query='china')
+    generate_random_data(query='us')
     get_data()
     return JsonResponse({'status' : 200})
 
